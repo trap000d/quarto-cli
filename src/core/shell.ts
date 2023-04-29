@@ -14,6 +14,11 @@ export async function openUrl(url: string) {
     windows: "explorer",
     darwin: "open",
     linux: "xdg-open",
+    freebsd: "xdg-open",
+    netbsd: "xdg-open",
+    aix: "defaultbrowser",
+    solaris: "sdtwebclient",
+    illumos: "xdg-open"
   };
 
   const cmd = shellOpen[Deno.build.os];

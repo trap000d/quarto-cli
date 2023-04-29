@@ -35,7 +35,7 @@ function quartoDir(
   return fullDir;
 }
 
-export function userDataDir(appName: string, roaming = false) {
+export function userDataDir(appName: string, roaming = false):string {
   switch (Deno.build.os) {
     case "darwin":
       return darwinUserDataDir(appName);
@@ -44,9 +44,10 @@ export function userDataDir(appName: string, roaming = false) {
     case "windows":
       return windowsUserDataDir(appName, roaming);
   }
+  return '';
 }
 
-export function userConfigDir(appName: string, roaming = false) {
+export function userConfigDir(appName: string, roaming = false):string {
   switch (Deno.build.os) {
     case "darwin":
       return darwinUserDataDir(appName);
@@ -55,9 +56,10 @@ export function userConfigDir(appName: string, roaming = false) {
     case "windows":
       return windowsUserDataDir(appName, roaming);
   }
+  return '';
 }
 
-export function userCacheDir(appName: string) {
+export function userCacheDir(appName: string):string {
   switch (Deno.build.os) {
     case "darwin":
       return darwinUserCacheDir(appName);
@@ -66,9 +68,10 @@ export function userCacheDir(appName: string) {
     case "windows":
       return windowsUserDataDir(appName);
   }
+  return '';
 }
 
-export function userRuntimeDir(appName: string) {
+export function userRuntimeDir(appName: string):string {
   switch (Deno.build.os) {
     case "darwin":
       return darwinUserCacheDir(appName);
@@ -77,54 +80,58 @@ export function userRuntimeDir(appName: string) {
     case "windows":
       return windowsUserDataDir(appName);
   }
+  return '';
 }
 
-function darwinUserDataDir(appName: string) {
+function darwinUserDataDir(appName: string):string {
   return join(
     Deno.env.get("HOME") || "",
     "Library",
     "Application Support",
     appName,
   );
+  return '';
 }
 
-function darwinUserCacheDir(appName: string) {
+function darwinUserCacheDir(appName: string):string {
   return join(
     Deno.env.get("HOME") || "",
     "Library",
     "Caches",
     appName,
   );
+  return '';
 }
 
-function xdgUserDataDir(appName: string) {
+function xdgUserDataDir(appName: string):string {
   const dataHome = Deno.env.get("XDG_DATA_HOME") ||
     join(Deno.env.get("HOME") || "", ".local", "share");
   return join(dataHome, appName);
 }
 
-function xdgUserConfigDir(appName: string) {
+function xdgUserConfigDir(appName: string):string {
   const configHome = Deno.env.get("XDG_CONFIG_HOME") ||
     join(Deno.env.get("HOME") || "", ".config");
   return join(configHome, appName);
 }
 
-function xdgUserCacheDir(appName: string) {
+function xdgUserCacheDir(appName: string):string {
   const cacheHome = Deno.env.get("XDG_CACHE_HOME") ||
     join(Deno.env.get("HOME") || "", ".cache");
   return join(cacheHome, appName);
 }
 
-function xdgUserRuntimeDir(appName: string) {
+function xdgUserRuntimeDir(appName: string):string {
   const runtimeDir = Deno.env.get("XDG_RUNTIME_DIR");
   if (runtimeDir) {
     return runtimeDir;
   } else {
     return xdgUserDataDir(appName);
   }
+  return '';
 }
 
-function windowsUserDataDir(appName: string, roaming = false) {
+function windowsUserDataDir(appName: string, roaming = false):string {
   const dir =
     (roaming ? Deno.env.get("APPDATA") : Deno.env.get("LOCALAPPDATA")) || "";
   return join(dir, appName);

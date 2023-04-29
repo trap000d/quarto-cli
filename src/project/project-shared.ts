@@ -146,7 +146,7 @@ export function toInputRelativePaths(
       for (let index = 0; index < collection.length; ++index) {
         const value = collection[index];
         if (Array.isArray(value) || value instanceof Object) {
-          inner(value);
+          inner({...value});
         } else if (typeof value === "string") {
           if (value.length > 0 && !isAbsolute(value)) {
             collection[index] = fixup(value);
