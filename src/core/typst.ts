@@ -103,19 +103,19 @@ export async function typstWatch(
   });
 
   // spawn it
-  cmd.spawn();
+  const child=cmd.spawn();
 
   // wait for ready
   let allOutput = "";
   const decoder = new TextDecoder();
-  for await (const chunk of cmd.stderr) {
+  for await (const chunk of child.stderr) {
     const text = decoder.decode(chunk);
     allOutput += text;
     if (allOutput.includes("compiled successfully")) {
       if (!quiet) {
         typstProgressDone();
       }
-      cmd.status.then((status) => {
+      child.status.then((status) => {
         console.log(`typst exited with status ${status.code}`);
       });
       break;
